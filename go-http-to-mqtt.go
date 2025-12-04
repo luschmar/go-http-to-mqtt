@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
@@ -17,7 +18,8 @@ func initMQTT() {
 	opts := mqtt.NewClientOptions()
 	opts.AddBroker(os.Getenv("MQTT_BROKER"))
 	opts.SetClientID(os.Getenv("MQTT_CLIENT_ID"))
-	if os.LookupEnv("MQTT_USERNAME") {
+	_, ok := os.LookupEnv("MQTT_USERNAME")
+	if ok {
 		opts.SetUsername(os.Getenv("MQTT_USERNAME"))
 		opts.SetPassword(os.Getenv("MQTT_PASSWORD"))
 	}
@@ -64,6 +66,6 @@ func main() {
 	// Set up HTTP server
 	http.HandleFunc("/publish", handlePostRequest)
 
-	fmt.Printf("HTTP server listening on port %s\n", port)
+	fmt.Printf("HTTP server listening on port %s\n", os.Getenv("HTTP_PORT"))
 	log.Fatal(http.ListenAndServe(os.Getenv("HTTP_PORT"), nil))
 }
