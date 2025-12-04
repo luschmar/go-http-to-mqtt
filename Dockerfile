@@ -4,5 +4,5 @@ RUN update-ca-certificates
 
 FROM scratch
 COPY --from=certsrc /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-ADD go-mqtt-to-traccar /
+ADD go-http-to-mqtt /
 CMD ["/go-http-to-mqtt"]
